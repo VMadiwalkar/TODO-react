@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-
+import prompt from "react-native-prompt-android";
 import {
   FlatList,
   StyleSheet,
@@ -12,17 +12,13 @@ import {
   Icon,
   Alert,
   Image,
+  TextInput,
   Pressable,
+  Platform,
 } from "react-native";
 
 export default function App() {
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text>Open up App.js to start working on your app!</Text>
-  //       <StatusBar style="auto" />
-  //     </View>
-  //   );
-  // }
+  var androidtext;
 
   const [items, setItems] = useState([]);
 
@@ -41,6 +37,12 @@ export default function App() {
     },
   });
 
+  const stylesVisible = StyleSheet.create({
+    container: {
+      display: "none",
+    },
+  });
+
   const Topheader = (props) => {
     return (
       <View>
@@ -56,7 +58,7 @@ export default function App() {
           justifyContent: "center",
           width: 70,
           position: "absolute",
-          bottom: 0,
+          bottom: 10,
           right: 20,
           height: 70,
           backgroundColor: "rgba(0,0,255,0.4)",
@@ -64,23 +66,56 @@ export default function App() {
           alignItems: "center",
         }}
         onPress={() => {
-          Alert.prompt("", "Enter your TODO item", [
-            {
-              text: "Cancel",
-              onPress: () => console.log("Cancel Pressed"),
-              style: "cancel",
-            },
-            {
-              text: "OK",
-              onPress: (item) => {
-                setItems([...items, { key: item }]);
+          Platform.select({
+            ios: Alert.prompt("", "Enter your TODO item", [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel",
               },
-            },
-          ]);
+              {
+                text: "OK",
+                onPress: (item) => {
+                  setItems([...items, { key: item }]);
+                },
+              },
+            ]),
+            android: setItems([...items, { key: androidtext }]),
+          });
+          console.log("fab pressed");
         }}
       >
         <Text style={{ color: "white", fontSize: 30 }}>+</Text>
       </TouchableOpacity>
+    );
+  };
+
+  const TextInputExample = () => {
+    console.log(Platform.OS.toString());
+    if (Platform.OS === "ios") {
+      var displayMode = "none";
+    }
+
+    return (
+      <TextInput
+        placeholder="Enter your item"
+        onChangeText={(text) => (androidtext = text)}
+        style={{
+          borderRadius: 50,
+          display: displayMode,
+          width: 200,
+          position: "absolute",
+          bottom: 10,
+          right: 100,
+          height: 50,
+          borderRightWidth: 2,
+          borderLeftWidth: 2,
+          borderTopWidth: 2,
+          borderBottomWidth: 2,
+          padding: 15,
+          margin: 10,
+        }}
+      ></TextInput>
     );
   };
 
@@ -115,6 +150,7 @@ export default function App() {
             />
           </View>
           <FloatingButton></FloatingButton>
+          <TextInputExample></TextInputExample>
         </View>
       </SafeAreaView>
     );
