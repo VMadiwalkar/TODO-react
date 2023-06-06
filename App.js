@@ -119,8 +119,6 @@ export default function App() {
     );
   };
 
-  // const
-
   const FlatListBasics = () => {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -136,17 +134,8 @@ export default function App() {
           >
             <FlatList
               data={items}
-              renderItem={
-                ({ item }) => <Item item={item} />
-                // (
-                //   <View>
-                //     <Text style={styles.item}>{item.key}</Text>
-                //   </View>
-                // )
-              }
+              renderItem={({ item }) => <Item item={item} />}
               keyExtractor={(item) => item.id}
-
-              // <Text style={styles.item}>{item.key}</Text>}
             />
           </View>
           <FloatingButton></FloatingButton>
@@ -165,7 +154,6 @@ export default function App() {
           alignItems: "center",
           marginTop: 20,
           justifyContent: "center",
-          // backgroundColor: "red",
         }}
       >
         <View
@@ -185,22 +173,6 @@ export default function App() {
             width: 20,
           }}
         >
-          {/* <View
-            style={{
-              // flex: 1,
-              height: 20,
-              width: 20,
-              // alignContent: "center",
-              // justifyContent: "center",
-              right: 10,
-            }}
-          > */}
-          {/* <Icon
-              name="delete"
-              size={20}
-              color="white"
-              style={{ height: 20, width: 20 }}
-            ></Icon> */}
           <TouchableOpacity onPress={() => this._onPress(item.key)}>
             <Image
               source={require("./assets/icons8-delete-24.png")}
@@ -213,15 +185,12 @@ export default function App() {
               }}
             ></Image>
           </TouchableOpacity>
-          {/* </View> */}
-          {/* <Button title="" onPress={() => this._onPress(item.key)}></Button> */}
         </View>
       </View>
     );
   };
 
   _onPress = (item) => {
-    // your code on item press
     console.log("clicked " + item);
     setItems((oldValue) => {
       return oldValue.filter((itemObj) => itemObj.key != item);
